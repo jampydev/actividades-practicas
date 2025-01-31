@@ -13,17 +13,17 @@ function agregarFila(nombre = "", actividad = "", entrada = obtenerHoraActual(),
     let tabla = document.querySelector("#tabla tbody");
     let fila = document.createElement("tr");
 
+    let celdaSalida = salida 
+        ? `<span>${salida}</span>` 
+        : `<button class="btn-salida">🕒 Salida</button>`;
+
     fila.innerHTML = `
         <td>${entrada}</td>
         <td contenteditable="true">${nombre}</td>
         <td contenteditable="true">${actividad}</td>
         <td>${horas}</td>
-        <td>
-            ${salida ? salida : `<button class="btn-salida">🕒 Salida</button>`}
-        </td>
-        <td>
-            <button class="btn-eliminar">🗑 Borrar</button>
-        </td>
+        <td>${celdaSalida}</td>
+        <td><button class="btn-eliminar">🗑 Borrar</button></td>
     `;
 
     tabla.appendChild(fila);
@@ -66,7 +66,7 @@ function asignarEventos(fila) {
             let celdaHoras = fila.children[3];
 
             let horaSalida = obtenerHoraActual();
-            celdaSalida.innerHTML = horaSalida;
+            celdaSalida.innerHTML = `<span>${horaSalida}</span>`; // Remueve el botón y muestra la hora
 
             let horaEntrada = celdaEntrada.textContent;
             let diferencia = calcularDiferenciaHoras(horaEntrada, horaSalida);
@@ -101,7 +101,7 @@ function guardarDatos() {
             nombre: celdas[1].textContent,
             actividad: celdas[2].textContent,
             horas: celdas[3].textContent,
-            salida: celdas[4].textContent
+            salida: celdas[4].textContent.trim()
         };
         datos.push(filaData);
     });
