@@ -1,24 +1,12 @@
-
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
-
     cargarDatos();
-
-
 });
-
-
 
 // Función para obtener la hora actual
 function obtenerHoraActual() {
     let ahora = new Date();
     return ahora.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 }
-
-
-
 
 // Función para agregar una nueva fila a la tabla
 function agregarFila(nombre = "", actividad = "", entrada = obtenerHoraActual(), salida = "", horas = "") {
@@ -43,9 +31,6 @@ function agregarFila(nombre = "", actividad = "", entrada = obtenerHoraActual(),
     guardarDatos();
 }
 
-
-
-
 // Función para calcular la diferencia de horas
 function calcularDiferenciaHoras(horaInicio, horaFin) {
     let formatoHora = (hora) => {
@@ -68,14 +53,11 @@ function calcularDiferenciaHoras(horaInicio, horaFin) {
     return `${horas}h ${minutos}m`;
 }
 
-
-
-
-
 // Función para asignar eventos a los botones de cada fila
 function asignarEventos(fila) {
     let btnSalida = fila.querySelector(".btn-salida");
     let btnEliminar = fila.querySelector(".btn-eliminar");
+    let celdasEditables = fila.querySelectorAll("td[contenteditable='true']");
 
     if (btnSalida) {
         btnSalida.addEventListener("click", function () {
@@ -98,10 +80,14 @@ function asignarEventos(fila) {
         fila.remove();
         guardarDatos();
     });
+
+    // Guardar cambios en celdas editables al escribir
+    celdasEditables.forEach(celda => {
+        celda.addEventListener("input", function () {
+            guardarDatos();
+        });
+    });
 }
-
-
-
 
 // Función para guardar datos en localStorage
 function guardarDatos() {
@@ -123,10 +109,6 @@ function guardarDatos() {
     localStorage.setItem("tablaDatos", JSON.stringify(datos));
 }
 
-
-
-
-
 // Función para cargar los datos guardados en localStorage
 function cargarDatos() {
     let datosGuardados = localStorage.getItem("tablaDatos");
@@ -137,8 +119,6 @@ function cargarDatos() {
         });
     }
 }
-
-
 
 // Función para reiniciar la tabla completamente
 function reiniciarTabla() {
